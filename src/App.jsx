@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from 'react-router-dom'
+import './App.css'
 
 function HomePage() {
   return <h1>Hauptseite</h1>
