@@ -1,9 +1,6 @@
 import { Link, Route, Routes } from 'react-router-dom'
 import './App.css'
-
-function HomePage() {
-  return <h1>Hauptseite</h1>
-}
+import HomePage from './pages/HomePage.jsx'
 
 function EventPage() {
   return <h1>Event</h1>
