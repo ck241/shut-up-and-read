@@ -15,7 +15,8 @@ import logo from '../assets/logo.svg'
 function HomePage() {
 
   // Konstanten für den Header-Text und den Button-Text
-  const headerTitle = 'Dein nächstes Kapitel beginnt gemeinsam.'
+  const headerSmallTitle = 'Gemeinsam lesen'
+  const headerBigTitle = 'Dein nächstes Kapitel beginnt gemeinsam.'
   const headerSubtitle = 'Finde Lese-Events in deiner Nähe, tausche dich mit anderen \
   Lesebegeisterten aus und entdecke neue Geschichten. Egal ob du ein Buchclub suchst oder \
   einfach nur neue Freunde finden möchtest – bei uns bist du richtig!'
@@ -23,31 +24,34 @@ function HomePage() {
   const headerButtonLink = '/signup'  // TODO <- if/else (/signup /events)
 
   return (
-    <div className="relative isolate overflow-hidden px-5 py-20 text-white sm:px-8 sm:py-56 lg:px-12">
-      <img alt="" className="absolute inset-0 -z-20 h-full w-full object-cover object-top-left" src={headerImage} />
-      <div className="absolute inset-0 -z-10 bg-black/55" />
+    <div className="relative min-h-screen overflow-hidden bg-stone-50 px-5 py-1 sm:px-8 sm:py-20 lg:px-12">
 
-      <div className="absolute right-5 top-5 w-32 rounded-2xl bg-white/55 p-4 shadow-xl sm:right-8 sm:top-8 sm:w-80 lg:right-12">
-        <img alt="Shut Up and Read" className="h-auto w-full" src={logo} />
-      </div>
+      <section className="relative mx-auto max-w-6xl">
+        <div className="relative isolate overflow-hidden rounded-3xl px-6 py-16 text-white shadow-xl shadow-cyan-950/15 sm:px-10 sm:py-24">
+          <img alt="" className="absolute inset-0 -z-20 h-full w-full object-cover object-top-left" src={headerImage} />
+          <div className="absolute inset-0 -z-10 bg-linear-to-r from-cyan-950/95 via-cyan-900/80 to-red-950/55" />
 
-      <div className="mx-auto max-w-6xl pt-28 sm:pt-0">
-        <div className="max-w-2xl">
-          <h1 className="mt-5 text-5xl font-black tracking-tight sm:text-6xl">
-            {headerTitle}
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-stone-300">
-            {headerSubtitle}
-          </p>
-          <Link
-            className="mt-9 inline-block rounded-full bg-red-900 px-6 py-3 font-bold transition-colors hover:bg-red-950"
-            to={headerButtonLink}
-          >
-            {headerButtonText}
-          </Link>
+          <div className="absolute right-5 top-5 w-32 rounded-2xl bg-white/60 p-3 shadow-xl sm:right-8 sm:top-8 sm:w-56 sm:p-4">
+            <img alt="Shut Up and Read" className="h-auto w-full" src={logo} />
+          </div>
+
+          <div className="max-w-2xl pt-28 sm:pt-0">
+            <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-sky-300">{headerSmallTitle}</p>
+            <h1 className="mt-3 text-5xl font-black tracking-tight sm:text-6xl">
+              {headerBigTitle}
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-stone-200">
+              {headerSubtitle}
+            </p>
+            <Link
+              className="mt-9 inline-block rounded-full bg-white/90 px-6 py-3 font-bold text-cyan-900 shadow-lg transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+              to={headerButtonLink}
+            >
+              {headerButtonText}
+            </Link>
+          </div>
         </div>
-
-      </div>
+      </section>
     </div>
   )
 }
