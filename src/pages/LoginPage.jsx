@@ -43,10 +43,8 @@ function LoginPage() {
       return;
     }
 
+    localStorage.setItem('user_token', data.token);
     navigate('/');
-
-    console.log(data);
-    // Handle login logic here
   }
 
   return (
