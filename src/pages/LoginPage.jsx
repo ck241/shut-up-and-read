@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import FullLayout from '../layouts/FullLayout';
 import {useState} from 'react';
@@ -8,6 +8,8 @@ function LoginPage() {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   function setFormValue(key, value) {
     setForm((f) => {
@@ -20,6 +22,12 @@ function LoginPage() {
 
   async function onLogin(e) {
     e.preventDefault();
+    setError('');
+
+    if (!form.email || !form.password) {
+      setError('Bitte fülle sowohl E-Mail-Adresse als auch Passwort aus.');
+      return;
+    }
 
     const response = await fetch('http://localhost:3001/api/auth/login', {
       method: 'POST',
@@ -29,7 +37,15 @@ function LoginPage() {
       body: JSON.stringify(form),
     });
 
-    console.log(await response.json());
+    const data = await response.json();
+    if (!response.ok) {
+      setError(data.error || 'Anmeldung fehlgeschlagen. Bitte überprüfe deine Angaben.');
+      return;
+    }
+
+    navigate('/');
+
+    console.log(data);
     // Handle login logic here
   }
 
@@ -38,6 +54,13 @@ function LoginPage() {
       <form onSubmit={onLogin} className="w-full rounded-4xl border border-red-950/10 bg-white/90 p-8 shadow-2xl shadow-cyan-950/10 backdrop-blur-sm sm:p-10">
         <img src={logo} alt="Logo" className="mx-auto h-28 w-auto" />
         <div className="grid gap-6">
+          {error && (
+            <div className="mt-10 rounded-3xl border border-red-500/20 bg-red-50 px-4 py-4 text-sm text-red-950 shadow-sm">
+              <p className="font-semibold">Fehler</p>
+              <p className="mt-1 leading-6">{error}</p>
+            </div>
+          )}
+
           <label className="grid gap-2 text-sm font-semibold text-red-950">
             E-Mail-Adresse
             <input
@@ -63,7 +86,7 @@ function LoginPage() {
             />
           </label>
 
-          <button className="inline-flex h-14 w-full items-center justify-center rounded-2xl bg-cyan-900 px-6 text-base font-bold text-white shadow-lg shadow-cyan-950/20 transition duration-200 hover:bg-cyan-800">
+          <button className="cursor-pointer inline-flex h-14 w-full items-center justify-center rounded-2xl bg-cyan-900 px-6 text-base font-bold text-white shadow-lg shadow-cyan-950/20 transition duration-200 hover:bg-cyan-800">
             Anmelden
           </button>
 
