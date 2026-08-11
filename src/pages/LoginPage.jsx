@@ -1,15 +1,17 @@
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import FullLayout from '../layouts/FullLayout';
 import {useState} from 'react';
+import useAuth from '../hooks/useAuth';
 
 function LoginPage() {
+  const {login} = useAuth();
+
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   function setFormValue(key, value) {
     setForm((f) => {
@@ -24,27 +26,11 @@ function LoginPage() {
     e.preventDefault();
     setError('');
 
-    if (!form.email || !form.password) {
-      setError('Bitte fülle sowohl E-Mail-Adresse als auch Passwort aus.');
-      return;
+    try {
+      await login(form.email, form.password);
+    } catch (e) {
+      setError(e.message);
     }
-
-    const response = await fetch('http://localhost:3001/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(form),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error || 'Anmeldung fehlgeschlagen. Bitte überprüfe deine Angaben.');
-      return;
-    }
-
-    localStorage.setItem('user_token', data.token);
-    navigate('/');
   }
 
   return (

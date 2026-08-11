@@ -4,7 +4,6 @@ import EventPage from './pages/EventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
-import FullLayout from './layouts/FullLayout.jsx';
 
 function SignupPage() {
   return <h1>Registrieren</h1>;
