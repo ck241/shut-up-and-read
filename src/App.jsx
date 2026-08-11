@@ -1,8 +1,9 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import Header from "./components/Header.jsx";
-import EventPage from "./pages/EventPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import {Route, Routes} from 'react-router-dom';
+import './App.css';
+import EventPage from './pages/EventPage.jsx';
+import HomePage from './pages/HomePage.jsx';
+import MainLayout from './layouts/MainLayout.jsx';
+import FullLayout from './layouts/FullLayout.jsx';
 
 function LoginPage() {
   return <h1>Login</h1>;
@@ -19,17 +20,17 @@ function NotFoundPage() {
 function App() {
   return (
     <>
-      <Header />
-
-      <main>
-        <Routes>
+      <Routes>
+        <Route path="/auth" element={<FullLayout />}>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
+        </Route>
+        <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/events" element={<EventPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </>
   );
 }
