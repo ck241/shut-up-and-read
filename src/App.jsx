@@ -1,6 +1,7 @@
 import {Route, Routes} from 'react-router-dom';
 import './App.css';
 import EventPage from './pages/EventPage.jsx';
+import AddEventPage from './pages/AddEventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="events" element={<EventPage />} />
+          <Route path="events/new" element={<AddEventPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

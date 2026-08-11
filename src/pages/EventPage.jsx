@@ -4,34 +4,31 @@
  * Lese-Events finden und hinzufügen können.
  */
 
-import EventCard from '../components/EventCard.jsx'
-import useEvents from '../hooks/useEvents.js'
-import eventHeaderImage from '../assets/header_events.webp'
-
+import {Link} from 'react-router-dom';
+import EventCard from '../components/EventCard.jsx';
+import useEvents from '../hooks/useEvents.js';
+import eventHeaderImage from '../assets/header_events.webp';
 
 // String-Konstanten für die Event-Seite
-const headerSmallTitle = 'Gemeinsam lesen'
-const headerBigTitle = 'Deine nächsten Events.'
-const headerSubtitle = 'Finde einen Ort für dein Buch, neue Perspektiven und Menschen, die Geschichten genauso lieben wie du.'
-const headerButtonText = 'Event hinzufügen'
-const headerButtonLink = '/events/new'
-const upcomingEventsText = 'anstehende Events'
-const loadingEventsText = 'Events werden geladen …'
-const noEventsText = 'Es sind aktuell keine Events geplant.'
-
+const headerSmallTitle = 'Gemeinsam lesen';
+const headerBigTitle = 'Deine nächsten Events.';
+const headerSubtitle = 'Finde einen Ort für dein Buch, neue Perspektiven und Menschen, die Geschichten genauso lieben wie du.';
+const headerButtonText = 'Event hinzufügen';
+const headerButtonLink = '/events/new';
+const upcomingEventsText = 'anstehende Events';
+const loadingEventsText = 'Events werden geladen …';
+const noEventsText = 'Es sind aktuell keine Events geplant.';
 
 /**
  * Funktion zur Darstellung der Event-Seite
  * @returns {JSX.Element} - Die Event-Seite der Anwendung
  */
 function EventPage() {
-  
-  // Verwendung des benutzerdefinierten Hooks useEvents, um die Event-Daten zu laden
-  const { events, isLoading, pagination } = useEvents()
+  // Verwenden des Hooks useEvents, um die Event-Daten zu laden
+  const {events, isLoading, pagination} = useEvents();
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-stone-50 px-5 py-12 text-red-950 sm:px-8 sm:py-20 lg:px-12">
-
       <section className="relative mx-auto max-w-6xl">
         <div className="relative isolate overflow-hidden rounded-3xl px-6 py-12 text-white shadow-xl shadow-cyan-950/15 sm:px-10 sm:py-14">
           <img alt="Lesende Menschen bei einem Event" className="absolute inset-0 -z-20 h-full w-full object-cover object-top-left" src={eventHeaderImage} />
@@ -40,19 +37,19 @@ function EventPage() {
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-2xl">
               <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-sky-300">{headerSmallTitle}</p>
-            <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{headerBigTitle}</h1>
-            <p className="mt-5 text-lg leading-8 text-stone-200">
-              {headerSubtitle}
-            </p>
+              <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{headerBigTitle}</h1>
+              <p className="mt-5 text-lg leading-8 text-stone-200">{headerSubtitle}</p>
             </div>
 
-            <a
-              href={headerButtonLink}
-              className="inline-flex w-fit items-center gap-2 rounded-full bg-white/90 px-5 py-3 font-bold text-cyan-900 shadow-lg transition duration-200hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+            <Link
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-white/90 px-5 py-3 font-bold text-cyan-900 shadow-lg transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+              to={headerButtonLink}
             >
-              <span aria-hidden="true" className="text-lg leading-none">+</span>
+              <span aria-hidden="true" className="text-lg leading-none">
+                +
+              </span>
               {headerButtonText}
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -65,9 +62,7 @@ function EventPage() {
         {isLoading ? (
           <p className="mt-10 text-stone-600">{loadingEventsText}</p>
         ) : events.length === 0 ? (
-          <p className="mt-10 rounded-2xl border border-red-950/10 bg-white/80 p-6 text-stone-600 shadow-sm">
-            {noEventsText}
-          </p>
+          <p className="mt-10 rounded-2xl border border-red-950/10 bg-white/80 p-6 text-stone-600 shadow-sm">{noEventsText}</p>
         ) : (
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {events.map((event) => (
@@ -77,7 +72,7 @@ function EventPage() {
         )}
       </section>
     </div>
-  )
+  );
 }
 
-export default EventPage
+export default EventPage;
