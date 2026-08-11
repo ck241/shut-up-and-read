@@ -1,19 +1,19 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import Header from './components/Header.jsx'
-import EventPage from './pages/EventPage.jsx'
-import HomePage from './pages/HomePage.jsx'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header.jsx";
+import EventPage from "./pages/EventPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
 
 function LoginPage() {
-  return <h1>Login</h1>
+  return <h1>Login</h1>;
 }
 
 function SignupPage() {
-  return <h1>Registrieren</h1>
+  return <h1>Registrieren</h1>;
 }
 
 function NotFoundPage() {
-  return <h1>404 – Seite nicht gefunden</h1>
+  return <h1>404 – Seite nicht gefunden</h1>;
 }
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         </Routes>
       </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
