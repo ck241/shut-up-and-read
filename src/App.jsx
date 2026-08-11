@@ -3,11 +3,8 @@ import './App.css';
 import EventPage from './pages/EventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
-
-function SignupPage() {
-  return <h1>Registrieren</h1>;
-}
 
 function NotFoundPage() {
   return <h1>404 – Seite nicht gefunden</h1>;
