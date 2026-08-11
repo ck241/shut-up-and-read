@@ -1,10 +1,7 @@
 import { Link, Route, Routes } from 'react-router-dom'
 import './App.css'
+import EventPage from './pages/EventPage.jsx'
 import HomePage from './pages/HomePage.jsx'
-
-function EventPage() {
-  return <h1>Event</h1>
-}
 
 function LoginPage() {
   return <h1>Login</h1>
@@ -23,7 +20,7 @@ function App() {
     <>
       <nav aria-label="Hauptnavigation">
         <Link to="/">Startseite</Link>{' '}
-        <Link to="/events/1">Event</Link>{' '}
+        <Link to="/events">Events</Link>{' '}
         <Link to="/login">Login</Link>{' '}
         <Link to="/signup">Registrieren</Link>
       </nav>
@@ -31,7 +28,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/events/:id" element={<EventPage />} />
+          <Route path="/events" element={<EventPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
