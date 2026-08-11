@@ -1,5 +1,6 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import Header from './components/Header.jsx'
 import EventPage from './pages/EventPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 
@@ -18,12 +19,7 @@ function NotFoundPage() {
 function App() {
   return (
     <>
-      <nav aria-label="Hauptnavigation">
-        <Link to="/">Startseite</Link>{' '}
-        <Link to="/events">Events</Link>{' '}
-        <Link to="/login">Login</Link>{' '}
-        <Link to="/signup">Registrieren</Link>
-      </nav>
+      <Header />
 
       <main>
         <Routes>

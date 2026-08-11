@@ -5,7 +5,6 @@
 
 import { Link } from 'react-router-dom'
 import headerImage from '../assets/header.webp'
-import logo from '../assets/logo.svg'
 
 
 /**
@@ -31,11 +30,7 @@ function HomePage() {
           <img alt="" className="absolute inset-0 -z-20 h-full w-full object-cover object-top-left" src={headerImage} />
           <div className="absolute inset-0 -z-10 bg-linear-to-r from-cyan-950/95 via-cyan-900/80 to-red-950/55" />
 
-          <div className="absolute right-5 top-5 w-32 rounded-2xl bg-white/60 p-3 shadow-xl sm:right-8 sm:top-8 sm:w-56 sm:p-4">
-            <img alt="Shut Up and Read" className="h-auto w-full" src={logo} />
-          </div>
-
-          <div className="max-w-2xl pt-28 sm:pt-0">
+          <div className="max-w-2xl">
             <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-sky-300">{headerSmallTitle}</p>
             <h1 className="mt-3 text-5xl font-black tracking-tight sm:text-6xl">
               {headerBigTitle}
