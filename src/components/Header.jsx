@@ -5,11 +5,13 @@
 
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../assets/logo.svg';
+import AuthNavigation from './AuthNavigation.jsx';
 
 // Konstanten für die Navigationstexte
 const homepage = 'Startseite';
 const events = 'Events';
 const login = 'Login';
+const logout = 'Logout';
 const signup = 'Mitmachen';
 
 // Funktion zur Bestimmung der CSS-Klassen für die Navigationslinks basierend auf dem aktiven Zustand
@@ -34,12 +36,7 @@ function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1 sm:gap-3">
-          <NavLink className={navigationLinkClass} to="/auth/login">
-            {login}
-          </NavLink>
-          <NavLink className="hidden rounded-full bg-red-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-950 sm:inline-flex" to="/auth/signup">
-            {signup}
-          </NavLink>
+          <AuthNavigation loginText={login} logoutText={logout} navigationLinkClass={navigationLinkClass} signupText={signup} />
           <Link className="ml-1 w-24 rounded-xl bg-white/70 p-2 sm:ml-2 sm:w-32" to="/">
             <img alt="Shut Up and Read" className="h-auto w-full" src={logo} />
           </Link>

@@ -82,12 +82,15 @@ function AddEventPage() {
 
     // Sende die Event-Daten an die API, um ein neues Event zu erstellen
     try {
+      // Warte auf die Antwort der API, um das Event zu erstellen
       await createEvent(eventData);
       setFormData(initialFormData);
       setSuccessMessage(successMessageText);
     } catch (requestError) {
+      // Wenn ein Fehler auftritt, setze die Fehlermeldung
       setError(requestError.message);
     } finally {
+      // Setze den Status zurück, um anzuzeigen, dass die Einreichung abgeschlossen ist
       setIsSubmitting(false);
     }
   }

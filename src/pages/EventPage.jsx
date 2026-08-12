@@ -7,14 +7,17 @@
 import {Link} from 'react-router-dom';
 import EventCard from '../components/EventCard.jsx';
 import useEvents from '../hooks/useEvents.js';
+import useSession from '../hooks/useSession.js';
 import eventHeaderImage from '../assets/header_events.webp';
 
 // String-Konstanten für die Event-Seite
 const headerSmallTitle = 'Gemeinsam lesen';
 const headerBigTitle = 'Deine nächsten Events.';
 const headerSubtitle = 'Finde einen Ort für dein Buch, neue Perspektiven und Menschen, die Geschichten genauso lieben wie du.';
-const headerButtonText = 'Event hinzufügen';
-const headerButtonLink = '/events/new';
+const addEventButtonText = 'Event hinzufügen';
+const signupButtonText = 'Jetzt mitmachen';
+const addEventButtonLink = '/events/new';
+const signupButtonLink = '/auth/signup';
 const upcomingEventsText = 'anstehende Events';
 const loadingEventsText = 'Events werden geladen …';
 const noEventsText = 'Es sind aktuell keine Events geplant.';
@@ -27,6 +30,9 @@ const errorEventsTitle = 'Events konnten nicht geladen werden.';
 function EventPage() {
   // Verwenden des Hooks useEvents, um die Event-Daten zu laden
   const {events, isLoading, error} = useEvents();
+  const {isAuthenticated} = useSession();
+  const headerButtonText = isAuthenticated ? addEventButtonText : signupButtonText;
+  const headerButtonLink = isAuthenticated ? addEventButtonLink : signupButtonLink;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-stone-50 px-5 py-12 text-red-950 sm:px-8 sm:py-20 lg:px-12">
@@ -46,9 +52,11 @@ function EventPage() {
               className="inline-flex w-fit items-center gap-2 rounded-full bg-white/90 px-5 py-3 font-bold text-cyan-900 shadow-lg transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
               to={headerButtonLink}
             >
-              <span aria-hidden="true" className="text-lg leading-none">
-                +
-              </span>
+              {isAuthenticated && (
+                <span aria-hidden="true" className="text-lg leading-none">
+                  +
+                </span>
+              )}
               {headerButtonText}
             </Link>
           </div>
