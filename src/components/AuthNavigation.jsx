@@ -40,7 +40,7 @@ function AuthNavigation({navigationLinkClass, loginText, logoutText, signupText}
       <NavLink className={navigationLinkClass} to="/auth/login">
         {loginText}
       </NavLink>
-      <NavLink className="hidden rounded-full bg-red-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-950 sm:inline-flex" to="/auth/signup">
+      <NavLink className="inline-flex rounded-full bg-red-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-950" to="/auth/signup">
         {signupText}
       </NavLink>
     </>
