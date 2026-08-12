@@ -9,11 +9,11 @@ import useEvent from '../hooks/useEvent.js';
 
 // Konstanten für die Texte auf der Event-Detailseite
 const eventsLink = '/events';
-const backToEventsText = '<- Zurück zu den Events';
 const headerSmallTitle = 'Event-Details';
 const loadingTitle = 'Event wird geladen …';
 const loadingText = 'Einen kleinen Moment – die Details werden abgerufen.';
 const errorTitle = 'Event konnte nicht geladen werden';
+const errorBackToEventsText = 'Zurück zu den Events';
 const descriptionTitle = 'Über dieses Event';
 const noDescriptionText = 'Für dieses Event wurde noch keine Beschreibung hinterlegt.';
 const dateLabel = 'Datum';
@@ -48,10 +48,6 @@ function EventDetailPage() {
           <img alt="Lesende Menschen bei einem Event" className="absolute inset-0 -z-20 h-full w-full object-cover object-top-left" src={eventHeaderImage} />
           <div className="absolute inset-0 -z-10 bg-linear-to-r from-cyan-950/95 via-cyan-900/80 to-red-950/55" />
 
-          <Link className="inline-flex items-center gap-2 text-xl font-bold text-sky-200 transition hover:text-white" to={eventsLink}>
-            {backToEventsText}
-          </Link>
-
           <div className="mt-10 max-w-3xl">
             <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-sky-300">{headerSmallTitle}</p>
             <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{event?.title ?? loadingTitle}</h1>
@@ -68,7 +64,7 @@ function EventDetailPage() {
             <p className="font-black">{errorTitle}</p>
             <p className="mt-2 leading-6">{error}</p>
             <Link className="mt-6 inline-flex font-bold text-cyan-900 transition hover:text-cyan-700" to={eventsLink}>
-              {backToEventsText}
+              {errorBackToEventsText}
             </Link>
           </div>
         ) : (
