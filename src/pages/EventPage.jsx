@@ -18,6 +18,7 @@ const headerButtonLink = '/events/new';
 const upcomingEventsText = 'anstehende Events';
 const loadingEventsText = 'Events werden geladen …';
 const noEventsText = 'Es sind aktuell keine Events geplant.';
+const errorEventsTitle = 'Events konnten nicht geladen werden.';
 
 /**
  * Funktion zur Darstellung der Event-Seite
@@ -25,7 +26,7 @@ const noEventsText = 'Es sind aktuell keine Events geplant.';
  */
 function EventPage() {
   // Verwenden des Hooks useEvents, um die Event-Daten zu laden
-  const {events, isLoading, pagination} = useEvents();
+  const {events, isLoading, error} = useEvents();
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-stone-50 px-5 py-12 text-red-950 sm:px-8 sm:py-20 lg:px-12">
@@ -55,12 +56,17 @@ function EventPage() {
 
         <div className="mt-7 flex items-center justify-between gap-4 text-sm">
           <p className="font-semibold text-stone-600">
-            <span className="font-black text-red-900">{pagination.totalCount}</span> {upcomingEventsText}
+            <span className="font-black text-red-900">{events.length}</span> {upcomingEventsText}
           </p>
         </div>
 
         {isLoading ? (
           <p className="mt-10 text-stone-600">{loadingEventsText}</p>
+        ) : error ? (
+          <div className="mt-10 rounded-2xl border border-red-900/15 bg-red-900/5 p-6 text-red-950" role="alert">
+            <p className="font-black">{errorEventsTitle}</p>
+            <p className="mt-1 leading-6">{error}</p>
+          </div>
         ) : events.length === 0 ? (
           <p className="mt-10 rounded-2xl border border-red-950/10 bg-white/80 p-6 text-stone-600 shadow-sm">{noEventsText}</p>
         ) : (
