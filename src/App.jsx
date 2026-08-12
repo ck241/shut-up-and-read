@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function NotFoundPage() {
   return <h1>404 – Seite nicht gefunden</h1>;
@@ -20,7 +21,9 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="events" element={<EventPage />} />
-          <Route path="events/new" element={<AddEventPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="events/new" element={<AddEventPage />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
