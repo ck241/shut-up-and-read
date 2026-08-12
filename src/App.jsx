@@ -5,13 +5,10 @@ import EventDetailPage from './pages/EventDetailPage.jsx';
 import AddEventPage from './pages/AddEventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-
-function NotFoundPage() {
-  return <h1>404 – Seite nicht gefunden</h1>;
-}
 
 function App() {
   return (
