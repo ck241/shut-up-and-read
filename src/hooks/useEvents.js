@@ -1,16 +1,18 @@
 /**
  * useEvents.js
- * Hook zum Abrufen von kommenden Events
+ * Hook zum Abrufen und Sortieren von Events
  */
 
 import {useEffect, useState} from 'react';
-import {getUpcomingEvents} from '../api/events.js';
+import {getEvents} from '../api/events.js';
 
 /**
- * Hook zum Abrufen von kommenden Events
+ * Funktionaler Hook zum Abrufen und optionalen Sortieren von Events.
+ * @param {Function} requestEvents - API-Funktion zum Abrufen der Events
+ * @param {boolean} shouldSort - Legt fest, ob die Events nach Datum sortiert werden sollen
  * @returns {{events: Array, isLoading: boolean, error: string}} - Die Event-Daten, Lade-Status und Fehlernachricht
  */
-function useEvents() {
+function useEvents(requestEvents = getEvents, shouldSort = true) {
   // State-Variablen für die Event-Daten, Lade-Status und Fehlernachricht
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,11 +26,13 @@ function useEvents() {
     async function loadEvents() {
       // Setze den Lade-Status auf true und die Fehlermeldung auf leer, bevor der Request gestartet wird
       try {
-        const upcomingEvents = await getUpcomingEvents(abortController.signal);
+        const eventsResponse = await requestEvents(abortController.signal);
+        const loadedEvents = Array.isArray(eventsResponse) ? eventsResponse : eventsResponse.results;
+        const eventsToDisplay = shouldSort ? [...loadedEvents].sort((firstEvent, secondEvent) => new Date(firstEvent.date) - new Date(secondEvent.date)) : loadedEvents;
 
         // Überprüfen, ob der Request nicht abgebrochen wurde, bevor der State aktualisiert wird
         if (!abortController.signal.aborted) {
-          setEvents(upcomingEvents);
+          setEvents(eventsToDisplay);
         }
       } catch (requestError) {
         // Fehlerbehandlung: Wenn der Request nicht abgebrochen wurde, setze die Fehlermeldung
@@ -47,7 +51,7 @@ function useEvents() {
 
     // Cleanup-Funktion, um den Request abzubrechen, wenn die Komponente unmountet wird
     return () => abortController.abort();
-  }, []);
+  }, [requestEvents, shouldSort]);
 
   // Rückgabe der Event-Daten, Lade-Status und Fehlernachricht
   return {events, isLoading, error};

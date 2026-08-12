@@ -8,23 +8,23 @@ const apiBaseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
 const tokenStorageKey = 'user_token';
 
 /**
- * Ruft alle kommenden Events ab.
+ * Ruft eine Event-Liste über den angegebenen API-Pfad ab.
+ * @param {string} path - Der API-Pfad für die Event-Liste
  * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
- * @returns {Promise<Object[]>} Die nach Datum sortierten Events
+ * @returns {Promise<Object|Object[]>} Die Antwort der API
  */
-export async function getUpcomingEvents(signal) {
+async function fetchEventList(path, signal) {
   let response;
 
-  // Versuche, die Events von der API abzurufen
+  // Versuche, die Event-Liste von der API abzurufen
   try {
-    response = await fetch(`${apiBaseUrl}/events/upcoming`, {signal});
+    response = await fetch(`${apiBaseUrl}${path}`, {signal});
   } catch (networkError) {
     // Wenn der Fehler ein Abbruchfehler ist, wirf ihn weiter
     if (networkError.name === 'AbortError') {
       throw networkError;
     }
 
-    // Wenn die API nicht erreichbar ist, wirf einen neuen Fehler mit einer benutzerfreundlichen Nachricht
     throw new Error('Die Events-API ist nicht erreichbar. Bitte prüfe, ob der API-Server läuft.', {cause: networkError});
   }
 
@@ -37,6 +37,24 @@ export async function getUpcomingEvents(signal) {
   }
 
   return responseData;
+}
+
+/**
+ * Ruft alle Events ab.
+ * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
+ * @returns {Promise<Object>} Die paginierte Antwort der API
+ */
+export function getEvents(signal) {
+  return fetchEventList('/events', signal);
+}
+
+/**
+ * Ruft alle kommenden Events ab.
+ * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
+ * @returns {Promise<Object[]>} Die kommenden Events
+ */
+export function getUpcomingEvents(signal) {
+  return fetchEventList('/events/upcoming', signal);
 }
 
 /**
