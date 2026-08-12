@@ -3,12 +3,9 @@ import './App.css';
 import EventPage from './pages/EventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
-
-function NotFoundPage() {
-  return <h1>404 – Seite nicht gefunden</h1>;
-}
 
 function App() {
   return (
