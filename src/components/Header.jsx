@@ -12,7 +12,7 @@ const homepage = 'Startseite';
 const events = 'Events';
 const login = 'Login';
 const logout = 'Logout';
-const signup = 'Mitmachen';
+const signup = 'Registrieren';
 
 // Funktion zur Bestimmung der CSS-Klassen für die Navigationslinks basierend auf dem aktiven Zustand
 const navigationLinkClass = ({isActive}) =>

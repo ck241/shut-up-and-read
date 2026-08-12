@@ -1,6 +1,7 @@
 import {Route, Routes} from 'react-router-dom';
 import './App.css';
 import EventPage from './pages/EventPage.jsx';
+import EventDetailPage from './pages/EventDetailPage.jsx';
 import AddEventPage from './pages/AddEventPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
@@ -24,6 +25,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="events/new" element={<AddEventPage />} />
           </Route>
+          <Route path="events/:id" element={<EventDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
