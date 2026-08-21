@@ -4,7 +4,7 @@ import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/shut-up-and-read/',
+export default defineConfig(({mode}) => ({
+  base: mode === 'production' ? '/shut-up-and-read/' : '/',
   plugins: [tailwindcss(), react(), babel({presets: [reactCompilerPreset()]})],
-});
+}));
