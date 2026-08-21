@@ -7,13 +7,37 @@
 const apiBaseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
 const tokenStorageKey = 'user_token';
 
+export interface Event {
+  id: string | number;
+  title: string;
+  description?: string | null;
+  date: string;
+  location: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+export interface EventListResponse {
+  results: Event[];
+  [key: string]: unknown;
+}
+
+export type EventInput = Omit<Event, 'id'>;
+
+interface ApiErrorResponse {
+  error?: string;
+}
+
+type EventListApiResponse = EventListResponse | Event[];
+type ApiResponse<T> = T | ApiErrorResponse | null;
+
 /**
  * Ruft eine Event-Liste über den angegebenen API-Pfad ab.
  * @param {string} path - Der API-Pfad für die Event-Liste
  * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
  * @returns {Promise<Object|Object[]>} Die Antwort der API
  */
-async function fetchEventList(path, signal) {
+async function fetchEventList<T extends EventListApiResponse>(path: string, signal: AbortSignal): Promise<T> {
   let response;
 
   // Versuche, die Event-Liste von der API abzurufen
@@ -21,7 +45,7 @@ async function fetchEventList(path, signal) {
     response = await fetch(`${apiBaseUrl}${path}`, {signal});
   } catch (networkError) {
     // Wenn der Fehler ein Abbruchfehler ist, wirf ihn weiter
-    if (networkError.name === 'AbortError') {
+    if ((networkError as Error).name === 'AbortError') {
       throw networkError;
     }
 
@@ -29,14 +53,14 @@ async function fetchEventList(path, signal) {
   }
 
   // Versuche, die JSON-Antwort zu parsen, auch wenn die Antwort kein gültiges JSON ist
-  const responseData = await response.json().catch(() => null);
+  const responseData: ApiResponse<T> = await response.json().catch(() => null);
 
   // Überprüfe, ob die Antwort der API erfolgreich war
   if (!response.ok) {
-    throw new Error(responseData?.error ?? 'Events konnten nicht geladen werden.');
+    throw new Error((responseData as ApiErrorResponse | null)?.error ?? 'Events konnten nicht geladen werden.');
   }
 
-  return responseData;
+  return responseData as T;
 }
 
 /**
@@ -44,8 +68,8 @@ async function fetchEventList(path, signal) {
  * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
  * @returns {Promise<Object>} Die paginierte Antwort der API
  */
-export function getEvents(signal) {
-  return fetchEventList('/events', signal);
+export function getEvents(signal: AbortSignal): Promise<EventListResponse> {
+  return fetchEventList<EventListResponse>('/events', signal);
 }
 
 /**
@@ -53,8 +77,8 @@ export function getEvents(signal) {
  * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
  * @returns {Promise<Object[]>} Die kommenden Events
  */
-export function getUpcomingEvents(signal) {
-  return fetchEventList('/events/upcoming', signal);
+export function getUpcomingEvents(signal: AbortSignal): Promise<Event[]> {
+  return fetchEventList<Event[]>('/events/upcoming', signal);
 }
 
 /**
@@ -63,7 +87,7 @@ export function getUpcomingEvents(signal) {
  * @param {AbortSignal} signal - Signal zum Abbrechen der Anfrage
  * @returns {Promise<Object>} Das angefragte Event
  */
-export async function getEventById(eventId, signal) {
+export async function getEventById(eventId: string, signal: AbortSignal): Promise<Event> {
   let response;
 
   // Versuche, das Event von der API abzurufen
@@ -71,7 +95,7 @@ export async function getEventById(eventId, signal) {
     response = await fetch(`${apiBaseUrl}/events/${encodeURIComponent(eventId)}`, {signal});
   } catch (networkError) {
     // Wenn der Fehler ein Abbruchfehler ist, wirf ihn weiter
-    if (networkError.name === 'AbortError') {
+    if ((networkError as Error).name === 'AbortError') {
       throw networkError;
     }
 
@@ -79,7 +103,7 @@ export async function getEventById(eventId, signal) {
   }
 
   // Versuche, die JSON-Antwort zu parsen, auch wenn die Antwort kein gültiges JSON ist
-  const responseData = await response.json().catch(() => null);
+  const responseData: ApiResponse<Event> = await response.json().catch(() => null);
 
   // Überprüfe, ob die Antwort der API erfolgreich war
   if (!response.ok) {
@@ -87,10 +111,10 @@ export async function getEventById(eventId, signal) {
       throw new Error('Dieses Event wurde nicht gefunden.');
     }
 
-    throw new Error(responseData?.error ?? 'Das Event konnte nicht geladen werden.');
+    throw new Error((responseData as ApiErrorResponse | null)?.error ?? 'Das Event konnte nicht geladen werden.');
   }
 
-  return responseData;
+  return responseData as Event;
 }
 
 /**
@@ -98,7 +122,7 @@ export async function getEventById(eventId, signal) {
  * @param {Object} eventData - Die Daten des neuen Events
  * @returns {Promise<Object>} Das von der API erstellte Event
  */
-export async function createEvent(eventData) {
+export async function createEvent(eventData: EventInput): Promise<Event> {
   // Hole den gespeicherten API-Token aus dem lokalen Speicher
   const token = localStorage.getItem(tokenStorageKey);
 
@@ -113,12 +137,12 @@ export async function createEvent(eventData) {
   });
 
   // Versuche, die JSON-Antwort zu parsen, auch wenn die Antwort kein gültiges JSON ist
-  const responseData = await response.json().catch(() => null);
+  const responseData: ApiResponse<Event> = await response.json().catch(() => null);
 
   // Überprüfe, ob die Antwort der API erfolgreich war
   if (!response.ok) {
-    throw new Error(responseData?.error ?? 'Das Event konnte nicht gespeichert werden.');
+    throw new Error((responseData as ApiErrorResponse | null)?.error ?? 'Das Event konnte nicht gespeichert werden.');
   }
 
-  return responseData;
+  return responseData as Event;
 }

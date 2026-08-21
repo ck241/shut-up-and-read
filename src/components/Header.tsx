@@ -5,7 +5,7 @@
 
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import AuthNavigation from './AuthNavigation.jsx';
+import AuthNavigation from './AuthNavigation';
 
 // Konstanten für die Navigationstexte
 const homepage = 'Startseite';
@@ -14,8 +14,12 @@ const login = 'Login';
 const logout = 'Logout';
 const signup = 'Registrieren';
 
+interface NavigationLinkState {
+  isActive: boolean;
+}
+
 // Funktion zur Bestimmung der CSS-Klassen für die Navigationslinks basierend auf dem aktiven Zustand
-const navigationLinkClass = ({isActive}) =>
+const navigationLinkClass = ({isActive}: NavigationLinkState) =>
   `rounded-full px-3 py-2 text-sm font-bold transition-colors ${isActive ? 'bg-cyan-900/10 text-cyan-900' : 'text-stone-600 hover:bg-stone-100 hover:text-red-900'}`;
 
 /**

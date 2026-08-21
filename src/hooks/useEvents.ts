@@ -4,7 +4,18 @@
  */
 
 import {useEffect, useState} from 'react';
-import {getEvents} from '../api/events.js';
+import {getEvents} from '../api/events';
+
+type EventListResponse = Awaited<ReturnType<typeof getEvents>>;
+type EventResponse = EventListResponse | EventListResponse['results'];
+
+export type EventRequest = (signal: AbortSignal) => Promise<EventResponse>;
+
+export interface UseEventsResult {
+  events: EventListResponse['results'];
+  isLoading: boolean;
+  error: string;
+}
 
 /**
  * Funktionaler Hook zum Abrufen und optionalen Sortieren von Events.
@@ -12,11 +23,11 @@ import {getEvents} from '../api/events.js';
  * @param {boolean} shouldSort - Legt fest, ob die Events nach Datum sortiert werden sollen
  * @returns {{events: Array, isLoading: boolean, error: string}} - Die Event-Daten, Lade-Status und Fehlernachricht
  */
-function useEvents(requestEvents = getEvents, shouldSort = true) {
+function useEvents(requestEvents: EventRequest = getEvents, shouldSort: boolean = true): UseEventsResult {
   // State-Variablen für die Event-Daten, Lade-Status und Fehlernachricht
-  const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [events, setEvents] = useState<UseEventsResult['events']>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   // useEffect-Hook, um die Events beim Mounten der Komponente zu laden
   useEffect(() => {
@@ -27,8 +38,10 @@ function useEvents(requestEvents = getEvents, shouldSort = true) {
       // Setze den Lade-Status auf true und die Fehlermeldung auf leer, bevor der Request gestartet wird
       try {
         const eventsResponse = await requestEvents(abortController.signal);
-        const loadedEvents = Array.isArray(eventsResponse) ? eventsResponse : eventsResponse.results;
-        const eventsToDisplay = shouldSort ? [...loadedEvents].sort((firstEvent, secondEvent) => new Date(firstEvent.date) - new Date(secondEvent.date)) : loadedEvents;
+        const loadedEvents: UseEventsResult['events'] = Array.isArray(eventsResponse) ? eventsResponse : eventsResponse.results;
+        const eventsToDisplay = shouldSort
+          ? [...loadedEvents].sort((firstEvent, secondEvent) => (new Date(firstEvent.date) as unknown as number) - (new Date(secondEvent.date) as unknown as number))
+          : loadedEvents;
 
         // Überprüfen, ob der Request nicht abgebrochen wurde, bevor der State aktualisiert wird
         if (!abortController.signal.aborted) {
@@ -36,8 +49,8 @@ function useEvents(requestEvents = getEvents, shouldSort = true) {
         }
       } catch (requestError) {
         // Fehlerbehandlung: Wenn der Request nicht abgebrochen wurde, setze die Fehlermeldung
-        if (requestError.name !== 'AbortError') {
-          setError(requestError.message);
+        if ((requestError as Error).name !== 'AbortError') {
+          setError((requestError as Error).message);
         }
       } finally {
         // Setze den Lade-Status auf false, wenn der Request nicht abgebrochen wurde

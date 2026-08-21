@@ -6,10 +6,24 @@
 import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import eventHeaderImage from '../assets/header_events.webp';
-import {createEvent} from '../api/events.js';
+import {createEvent} from '../api/events';
+
+interface EventFormData {
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+}
+
+interface CreateEventData {
+  title: string;
+  date: string;
+  location: string;
+  description?: string;
+}
 
 // Initiale Formulardaten für das Erstellen eines neuen Events
-const initialFormData = {
+const initialFormData: EventFormData = {
   title: '',
   description: '',
   date: '',
@@ -43,8 +57,8 @@ const backButtonText = 'Zurück zu den Events';
  * Darstellung der Seite zum Erstellen eines neuen Events.
  * @returns {JSX.Element} - Die Add-Event-Seite
  */
-function AddEventPage() {
-  const [formData, setFormData] = useState(initialFormData);
+function AddEventPage(): React.JSX.Element {
+  const [formData, setFormData] = useState<EventFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -53,12 +67,12 @@ function AddEventPage() {
    * Aktualisiert die Formulardaten, wenn der Benutzer Eingaben macht.
    * @param {Object} event - Das Ereignisobjekt des Eingabefelds
    */
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
     const {name, value} = event.target;
 
     setFormData((currentFormData) => ({
       ...currentFormData,
-      [name]: value,
+      [name as keyof EventFormData]: value,
     }));
   }
 
@@ -66,14 +80,14 @@ function AddEventPage() {
    * Verarbeitet das Absenden des Formulars zum Erstellen eines neuen Events.
    * @param {Object} event - Das Ereignisobjekt des Formulars
    */
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     setError('');
     setSuccessMessage('');
     setIsSubmitting(true);
 
     // Bereite die Event-Daten für die API-Anfrage vor
-    const eventData = {
+    const eventData: CreateEventData = {
       title: formData.title.trim(),
       date: new Date(formData.date).toISOString(),
       location: formData.location.trim(),
@@ -86,9 +100,9 @@ function AddEventPage() {
       await createEvent(eventData);
       setFormData(initialFormData);
       setSuccessMessage(successMessageText);
-    } catch (requestError) {
+    } catch (requestError: unknown) {
       // Wenn ein Fehler auftritt, setze die Fehlermeldung
-      setError(requestError.message);
+      setError((requestError as Error).message);
     } finally {
       // Setze den Status zurück, um anzuzeigen, dass die Einreichung abgeschlossen ist
       setIsSubmitting(false);
@@ -123,7 +137,7 @@ function AddEventPage() {
                 {titleLabel}
                 <input
                   className="h-14 rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base font-normal text-red-950 outline-none transition placeholder:text-stone-400 focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
-                  maxLength="255"
+                  maxLength={'255' as unknown as number}
                   name="title"
                   onChange={handleChange}
                   placeholder={titlePlaceholder}
@@ -137,7 +151,7 @@ function AddEventPage() {
                 {descriptionLabel}
                 <textarea
                   className="min-h-36 resize-y rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-base font-normal text-red-950 outline-none transition placeholder:text-stone-400 focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
-                  maxLength="255"
+                  maxLength={'255' as unknown as number}
                   name="description"
                   onChange={handleChange}
                   placeholder={descriptionPlaceholder}
@@ -162,7 +176,7 @@ function AddEventPage() {
                   {locationLabel}
                   <input
                     className="h-14 rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base font-normal text-red-950 outline-none transition placeholder:text-stone-400 focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
-                    maxLength="255"
+                    maxLength={'255' as unknown as number}
                     name="location"
                     onChange={handleChange}
                     placeholder={locationPlaceholder}

@@ -5,9 +5,9 @@
 
 import {Link} from 'react-router-dom';
 import headerImage from '../assets/header.webp';
-import useSession from '../hooks/useSession.js';
-import useEvents from '../hooks/useEvents.js';
-import EventCard from '../components/EventCard.jsx';
+import useSession from '../hooks/useSession';
+import useEvents from '../hooks/useEvents';
+import EventCard from '../components/EventCard';
 
 // Konstanten für den Header-Text und den Button-Text
 const headerSmallTitle = 'Gemeinsam lesen';
@@ -30,7 +30,7 @@ const errorEventsTitle = 'Events konnten nicht geladen werden.';
  * Funktion zur Darstellung der Startseite
  * @returns {JSX.Element} - Die Startseite der Anwendung
  */
-function HomePage() {
+function HomePage(): React.JSX.Element {
   const {isAuthenticated} = useSession();
   const {events, isLoading, error} = useEvents();
 
@@ -63,7 +63,10 @@ function HomePage() {
             <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-cyan-900">{upcomingEventsSmallTitle}</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight text-red-950 sm:text-4xl">{upcomingEventsTitle}</h2>
           </div>
-          <Link className="inline-flex w-fit rounded-full border border-cyan-900/15 bg-white px-5 py-3 font-bold text-cyan-900 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-900/30 hover:shadow-lg" to={allEventsLink}>
+          <Link
+            className="inline-flex w-fit rounded-full border border-cyan-900/15 bg-white px-5 py-3 font-bold text-cyan-900 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-900/30 hover:shadow-lg"
+            to={allEventsLink}
+          >
             {allEventsText}
           </Link>
         </div>

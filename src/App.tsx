@@ -1,14 +1,14 @@
 import {Route, Routes} from 'react-router-dom';
 import './App.css';
-import EventPage from './pages/EventPage.jsx';
-import EventDetailPage from './pages/EventDetailPage.jsx';
-import AddEventPage from './pages/AddEventPage.jsx';
-import HomePage from './pages/HomePage.jsx';
+import EventPage from './pages/EventPage';
+import EventDetailPage from './pages/EventDetailPage';
+import AddEventPage from './pages/AddEventPage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage.jsx';
-import NotFoundPage from './pages/NotFoundPage.jsx';
+import NotFoundPage from './pages/NotFoundPage';
 import SignupPage from './pages/SignupPage.jsx';
-import MainLayout from './layouts/MainLayout.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+import MainLayout from './layouts/MainLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (

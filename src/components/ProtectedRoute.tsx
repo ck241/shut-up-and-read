@@ -4,7 +4,7 @@
  */
 
 import {Navigate, Outlet} from 'react-router-dom';
-import useSession from '../hooks/useSession.js';
+import useSession from '../hooks/useSession';
 
 /**
  * Leitet nicht angemeldete Benutzer zur Anmeldung weiter.
