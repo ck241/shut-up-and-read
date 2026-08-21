@@ -5,7 +5,12 @@
 
 import {Link, useParams} from 'react-router-dom';
 import eventHeaderImage from '../assets/header_events.webp';
-import useEvent from '../hooks/useEvent.js';
+import useEvent from '../hooks/useEvent';
+
+interface EventRouteParams {
+  [key: string]: string | undefined;
+  id?: string;
+}
 
 // Konstanten für die Texte auf der Event-Detailseite
 const eventsLink = '/events';
@@ -26,9 +31,9 @@ const coordinatesLabel = 'Koordinaten';
  * Darstellung der Detailseite eines einzelnen Events.
  * @returns {JSX.Element} Die Event-Detailseite
  */
-function EventDetailPage() {
+function EventDetailPage(): React.JSX.Element {
   // Extrahiere die Event-ID aus den URL-Parametern und verwende den useEvent-Hook, um die Event-Daten zu laden
-  const {id} = useParams();
+  const {id} = useParams<EventRouteParams>();
   const {event, isLoading, error} = useEvent(id);
 
   // Berechne das Datum, ob es ein Wochenende ist, und formatiere die Anzeige
@@ -71,7 +76,7 @@ function EventDetailPage() {
           <article className="mt-8 grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
             <aside className={`rounded-3xl bg-linear-to-br p-7 text-white shadow-xl shadow-cyan-950/15 ${dateTheme}`}>
               <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-white/75">{formattedWeekday}</p>
-              <time className="mt-5 block text-3xl font-black tracking-tight" dateTime={event.date}>
+              <time className="mt-5 block text-3xl font-black tracking-tight" dateTime={event!.date}>
                 {formattedDate}
               </time>
               <p className="mt-3 text-lg font-bold text-white/90">{formattedTime} Uhr</p>
@@ -79,12 +84,12 @@ function EventDetailPage() {
 
             <div className="rounded-3xl border border-red-950/10 bg-white/85 p-6 shadow-xl shadow-cyan-950/5 backdrop-blur-sm sm:p-8">
               <p className={`text-sm font-extrabold uppercase tracking-[0.18em] ${weekdayTheme}`}>{descriptionTitle}</p>
-              <p className="mt-4 whitespace-pre-line text-base leading-8 text-stone-700">{event.description || noDescriptionText}</p>
+              <p className="mt-4 whitespace-pre-line text-base leading-8 text-stone-700">{event!.description || noDescriptionText}</p>
 
               <dl className="mt-8 grid gap-5 border-t border-red-950/10 pt-6 sm:grid-cols-2">
                 <div>
                   <dt className="text-xs font-extrabold uppercase tracking-[0.16em] text-stone-500">{locationLabel}</dt>
-                  <dd className="mt-2 font-bold text-red-950">{event.location}</dd>
+                  <dd className="mt-2 font-bold text-red-950">{event!.location}</dd>
                 </div>
                 <div>
                   <dt className="text-xs font-extrabold uppercase tracking-[0.16em] text-stone-500">{dateLabel}</dt>
@@ -98,13 +103,13 @@ function EventDetailPage() {
                 </div>
                 <div>
                   <dt className="text-xs font-extrabold uppercase tracking-[0.16em] text-stone-500">{eventIdLabel}</dt>
-                  <dd className="mt-2 font-bold text-red-950">#{event.id}</dd>
+                  <dd className="mt-2 font-bold text-red-950">#{event!.id}</dd>
                 </div>
                 {hasCoordinates && (
                   <div className="sm:col-span-2">
                     <dt className="text-xs font-extrabold uppercase tracking-[0.16em] text-stone-500">{coordinatesLabel}</dt>
                     <dd className="mt-2 font-bold text-red-950">
-                      {event.latitude}, {event.longitude}
+                      {event!.latitude}, {event!.longitude}
                     </dd>
                   </div>
                 )}

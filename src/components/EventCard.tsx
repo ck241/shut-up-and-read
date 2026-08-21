@@ -20,6 +20,17 @@ const weekendCardTheme = {
   weekday: 'text-red-900',
 }
 
+interface EventCardEvent {
+  id: string | number;
+  date: string;
+  title: string;
+  description?: string | null;
+  location: string;
+}
+
+interface EventCardProps {
+  event: EventCardEvent;
+}
 
 /**
  * Darstellung einer einzelnen Event-Karte
@@ -27,7 +38,7 @@ const weekendCardTheme = {
  * @param {Object} param0.event - Das Event-Objekt
  * @returns {JSX.Element} - Die Event-Karte
  */
-function EventCard({ event }) {
+function EventCard({ event }: EventCardProps) {
   // Datum des Events ermitteln und prüfen, ob es ein Wochenende ist
   const eventDate = new Date(event.date)
   const isWeekend = eventDate.getDay() === 0 || eventDate.getDay() === 6

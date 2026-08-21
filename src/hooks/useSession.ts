@@ -8,11 +8,16 @@ import {useEffect, useState} from 'react';
 const userTokenStorageKey = 'user_token';
 const authChangeEvent = 'auth-change';
 
+export interface UseSessionResult {
+  isAuthenticated: boolean;
+  logout: () => void;
+}
+
 /**
  * Gibt den aktuellen Authentifizierungsstatus zurück.
  * @returns {boolean} true, wenn der Benutzer authentifiziert ist, sonst false
  */
-function getAuthenticationStatus() {
+function getAuthenticationStatus(): boolean {
   return Boolean(localStorage.getItem(userTokenStorageKey));
 }
 
@@ -20,9 +25,9 @@ function getAuthenticationStatus() {
  * Stellt den aktuellen Login-Status und die Abmeldung bereit.
  * @returns {{isAuthenticated: boolean, logout: () => void}} Login-Status und Logout-Funktion
  */
-function useSession() {
+function useSession(): UseSessionResult {
   // Initialisiert den Authentifizierungsstatus basierend auf dem gespeicherten Token
-  const [isAuthenticated, setIsAuthenticated] = useState(getAuthenticationStatus);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(getAuthenticationStatus);
 
   // Synchronisiert den Authentifizierungsstatus, wenn sich der Token ändert oder die Seite neu geladen wird
   useEffect(() => {
@@ -45,7 +50,7 @@ function useSession() {
    * Entfernt den Authentifizierungstoken aus dem Local Storage und aktualisiert den Authentifizierungsstatus.
    * Löst ein benutzerdefiniertes Event aus, um andere Komponenten über die Änderung zu informieren.
    */
-  function logout() {
+  function logout(): void {
     localStorage.removeItem(userTokenStorageKey);
     setIsAuthenticated(false);
     window.dispatchEvent(new Event(authChangeEvent));

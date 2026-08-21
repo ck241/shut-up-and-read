@@ -5,9 +5,9 @@
  */
 
 import {Link} from 'react-router-dom';
-import EventCard from '../components/EventCard.jsx';
-import useUpcomingEvents from '../hooks/useUpcomingEvents.js';
-import useSession from '../hooks/useSession.js';
+import EventCard from '../components/EventCard';
+import useUpcomingEvents from '../hooks/useUpcomingEvents';
+import useSession from '../hooks/useSession';
 import eventHeaderImage from '../assets/header_events.webp';
 
 // String-Konstanten für die Event-Seite
@@ -27,7 +27,7 @@ const errorEventsTitle = 'Events konnten nicht geladen werden.';
  * Funktion zur Darstellung der Event-Seite
  * @returns {JSX.Element} - Die Event-Seite der Anwendung
  */
-function EventPage() {
+function EventPage(): React.JSX.Element {
   // Verwenden des Hooks useUpcomingEvents, um die kommenden Event-Daten zu laden
   const {events, isLoading, error} = useUpcomingEvents();
   const {isAuthenticated} = useSession();

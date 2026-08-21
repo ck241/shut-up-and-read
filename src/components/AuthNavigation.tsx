@@ -4,7 +4,14 @@
  */
 
 import {NavLink, useNavigate} from 'react-router-dom';
-import useSession from '../hooks/useSession.js';
+import useSession from '../hooks/useSession';
+
+interface AuthNavigationProps {
+  navigationLinkClass: ({isActive}: {isActive: boolean}) => string;
+  loginText: string;
+  logoutText: string;
+  signupText: string;
+}
 
 /**
  * Rendert die Navigation für An- oder Abmeldung abhängig vom Login-Status.
@@ -15,7 +22,7 @@ import useSession from '../hooks/useSession.js';
  * @param {string} props.signupText - Beschriftung für den Registrierungs-Link
  * @returns {JSX.Element} Die Authentifizierungs-Navigation
  */
-function AuthNavigation({navigationLinkClass, loginText, logoutText, signupText}) {
+function AuthNavigation({navigationLinkClass, loginText, logoutText, signupText}: AuthNavigationProps) {
   const navigate = useNavigate();
   const {isAuthenticated, logout} = useSession();
 
