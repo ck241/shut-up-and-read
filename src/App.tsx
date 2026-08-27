@@ -4,9 +4,9 @@ import EventPage from './pages/EventPage';
 import EventDetailPage from './pages/EventDetailPage';
 import AddEventPage from './pages/AddEventPage';
 import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage.jsx';
+import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
-import SignupPage from './pages/SignupPage.jsx';
+import SignupPage from './pages/SignupPage';
 import MainLayout from './layouts/MainLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 

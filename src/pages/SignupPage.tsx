@@ -4,7 +4,7 @@ import FullLayout from '../layouts/FullLayout';
 import {useState} from 'react';
 import useAuth from '../hooks/useAuth';
 
-function LoginPage() {
+function SignupPage(): React.JSX.Element {
   const {register} = useAuth();
 
   const [form, setForm] = useState({
@@ -86,4 +86,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignupPage;
