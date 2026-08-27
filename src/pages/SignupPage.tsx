@@ -4,32 +4,37 @@ import FullLayout from '../layouts/FullLayout';
 import {useState} from 'react';
 import useAuth from '../hooks/useAuth';
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 function SignupPage(): React.JSX.Element {
   const {register} = useAuth();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
 
-  function setFormValue(key, value) {
+  function setFormValue(key: 'email' | 'password', value: React.InputEvent<HTMLInputElement>): void {
     setForm((f) => {
       return {
         ...f,
-        [key]: value,
+        [key]: value.target.value,
       };
     });
   }
 
-  async function onSignup(e) {
+  async function onSignup(e: React.SubmitEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     setError('');
 
     try {
       await register(form.email, form.password);
     } catch (e) {
-      setError(e.message);
+      setError(e instanceof Error ? e.message : 'Unbekannter Fehler');
     }
   }
 
@@ -51,7 +56,7 @@ function SignupPage(): React.JSX.Element {
               autoComplete="username"
               type="email"
               value={form.email}
-              onInput={(e) => setFormValue('email', e.target.value)}
+              onInput={(e) => setFormValue('email', e)}
               placeholder="name@example.com"
               className="h-14 w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base text-red-950 outline-none transition focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
             />
@@ -61,12 +66,12 @@ function SignupPage(): React.JSX.Element {
             Passwort
             <input
               autoComplete="current-password"
-              minLength="8"
+              minLength={8}
               type="password"
               placeholder="••••••••"
               className="h-14 w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base text-red-950 outline-none transition focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
               value={form.password}
-              onInput={(e) => setFormValue('password', e.target.value)}
+              onInput={(e) => setFormValue('password', e)}
             />
           </label>
 

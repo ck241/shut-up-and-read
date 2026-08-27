@@ -3,13 +3,13 @@ import {useNavigate} from 'react-router-dom';
 export default function useAuth() {
   const navigate = useNavigate();
 
-  function validate(email, password) {
+  function validate(email: string, password: string): void {
     if (!email || !password) {
       throw new Error('Bitte fülle sowohl E-Mail-Adresse als auch Passwort aus.');
     }
   }
 
-  async function login(email, password) {
+  async function login(email: string, password: string): Promise<void> {
     validate(email, password);
 
     const response = await fetch('http://localhost:3001/api/auth/login', {
@@ -29,7 +29,7 @@ export default function useAuth() {
     navigate('/');
   }
 
-  async function register(email, password) {
+  async function register(email: string, password: string): Promise<void> {
     validate(email, password);
 
     const response = await fetch('http://localhost:3001/api/users', {

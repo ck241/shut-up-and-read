@@ -1,4 +1,4 @@
-const FullLayout = ({children, header, subheader}) => {
+const FullLayout = ({children, header, subheader}: {children: React.ReactNode; header: string; subheader: string}): React.JSX.Element => {
   return (
     <div className="flex grow flex-col justify-center items-center from-cyan-950/95 via-cyan-900/90 to-red-950/80 bg-linear-to-br">
       <div className="flex px-10 items-center w-full max-w-5xl flex-col gap-5">

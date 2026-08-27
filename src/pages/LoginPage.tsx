@@ -13,23 +13,23 @@ function LoginPage() {
   });
   const [error, setError] = useState('');
 
-  function setFormValue(key, value) {
+  function setFormValue(key: 'email' | 'password', value: React.ChangeEvent<HTMLInputElement>): void {
     setForm((f) => {
       return {
         ...f,
-        [key]: value,
+        [key]: value.target.value,
       };
     });
   }
 
-  async function onLogin(e) {
+  async function onLogin(e: React.SubmitEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     setError('');
 
     try {
       await login(form.email, form.password);
     } catch (e) {
-      setError(e.message);
+      setError(e instanceof Error ? e.message : 'Unbekannter Fehler');
     }
   }
 
@@ -51,7 +51,7 @@ function LoginPage() {
               autoComplete="username"
               type="email"
               value={form.email}
-              onInput={(e) => setFormValue('email', e.target.value)}
+              onChange={(e) => setFormValue('email', e)}
               placeholder="name@example.com"
               className="h-14 w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base text-red-950 outline-none transition focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
             />
@@ -61,12 +61,12 @@ function LoginPage() {
             Passwort
             <input
               autoComplete="current-password"
-              minLength="8"
+              minLength={8}
               type="password"
               placeholder="••••••••"
               className="h-14 w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 text-base text-red-950 outline-none transition focus:border-cyan-900 focus:ring-4 focus:ring-cyan-900/10"
               value={form.password}
-              onInput={(e) => setFormValue('password', e.target.value)}
+              onChange={(e) => setFormValue('password', e)}
             />
           </label>
 
